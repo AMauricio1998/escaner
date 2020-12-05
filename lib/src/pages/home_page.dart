@@ -2,6 +2,9 @@ import 'package:escaner/src/pages/direcciones_page.dart';
 import 'package:escaner/src/pages/mapas_page.dart';
 import 'package:flutter/material.dart';
 
+import '../models/scan_model.dart';
+import '../providers/db_provider.dart';
+
 
 // import 'package:barcode_scan/barcode_scan.dart';
 
@@ -41,12 +44,19 @@ class _HomePageState extends State<HomePage> {
   _scanQR() async {
     // https://fernando-herrera.com
     // geo:40.724233047051705,-74.00731459101564
-      String futureString = '';
+      //String futureString = '';
+      String futureString = 'https:fernando-herrera.com';
+ 
       // try {
       //   futureString = await BarcodeScanner.scan();
       // } catch(e) {
       //   futureString = e.toString();
       // }
+
+      if( futureString !=null){
+        final scan = ScanModel(valor: futureString);
+        DBProvider.db.nuevoScan(scan);
+      }
       // print ('Future String: $futureString');
       //  if ( futureString != null ){
       //    print('tenemos informacion');
