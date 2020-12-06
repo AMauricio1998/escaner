@@ -1,9 +1,11 @@
-import 'package:escaner/src/pages/direcciones_page.dart';
+import 'package:escaner/src/bloc/scans_bloc.dart';
+
+import 'package:escaner/src/pages/direcciones_page.dart'; 
 import 'package:escaner/src/pages/mapas_page.dart';
 import 'package:flutter/material.dart';
 
 import '../models/scan_model.dart';
-import '../providers/db_provider.dart';
+
 
 
 // import 'package:barcode_scan/barcode_scan.dart';
@@ -16,6 +18,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  final scansBloc = new ScansBloc();
+
   int currentIndex = 0;
 
   @override
@@ -25,8 +29,8 @@ class _HomePageState extends State<HomePage> {
         title: Text('QR Scanner'),
         actions: <Widget>[
           IconButton(
-            icon: Icon( Icons.delete_forever ),
-            onPressed: () {},
+            icon : Icon( Icons.delete_forever ),
+            onPressed: scansBloc.borrarScansTODOS,
           )
         ],
       ),
@@ -55,7 +59,7 @@ class _HomePageState extends State<HomePage> {
 
       if( futureString !=null){
         final scan = ScanModel(valor: futureString);
-        DBProvider.db.nuevoScan(scan);
+        scansBloc.agregarScan(scan);
       }
       // print ('Future String: $futureString');
       //  if ( futureString != null ){
