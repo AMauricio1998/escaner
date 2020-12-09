@@ -24,6 +24,8 @@ ScansBloc._internal(){
 final _scansController = StreamController<List<ScanModel>>.broadcast();
 Stream<List<ScanModel>> get scansStream => _scansController.stream;
 
+  get scansStreamHttp => null;
+
 
 dispose(){
   _scansController?.close();
