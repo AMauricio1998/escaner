@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:escaner/src/models/scan_model.dart';
 
 
+
 class Validators {
 
   final validarGeo = StreamTransformer<List<ScanModel>, List<ScanModel>>.fromHandlers(

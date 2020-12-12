@@ -1,15 +1,17 @@
 
 import 'dart:io';
-import 'package:escaner/src/models/scan_model.dart';
+
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
+
+import 'package:escaner/src/models/scan_model.dart';
 export  'package:escaner/src/models/scan_model.dart';
 
-class DBProvider{
+class DBProvider {
 
-  static Database _database;
-  static final DBProvider db = DBProvider._(); 
+  static Database _database; 
+  static final DBProvider db = DBProvider._();
 
   DBProvider._();
 
@@ -21,7 +23,9 @@ class DBProvider{
     return _database;
   }
 
+
   initDB() async {
+
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
 
     final path = join( documentsDirectory.path, 'ScansDB.db' );
@@ -32,25 +36,26 @@ class DBProvider{
       onOpen: (db) {},
       onCreate: ( Database db, int version ) async {
         await db.execute(
-          'CRESTE TABLE Scans ('
-          'id INTEGER PRIMARY KEY,'
-          'tipo TEXT,'
-          'valor TEXT'
-        ')'
+          'CREATE TABLE Scans ('
+          ' id INTEGER PRIMARY KEY,'
+          ' tipo TEXT,'
+          ' valor TEXT'
+          ')'
         );
       }
+    
     );
+
   }
 
-  //CREAR REGISTROR
+  // CREAR Registros
   nuevoScanRaw( ScanModel nuevoScan ) async {
 
-    final db = await database;
+    final db  = await database;
 
     final res = await db.rawInsert(
-      "INSERT INTO Scans (id, tipo, valor) "//ES IMPORTANTE PONER EL ESPACIO
+      "INSERT Into Scans (id, tipo, valor) "
       "VALUES ( ${ nuevoScan.id }, '${ nuevoScan.tipo }', '${ nuevoScan.valor }' )"
-      //----Los Strings van entre comillas----------------
     );
     return res;
 
@@ -58,20 +63,21 @@ class DBProvider{
 
   nuevoScan( ScanModel nuevoScan ) async {
 
-    final db = await database;
-    final res = await db.insert('Scans', nuevoScan.toJson() );
+    final db  = await database;
+    final res = await db.insert('Scans',  nuevoScan.toJson() );
     return res;
   }
 
-  // Select --Obtener informacion
+
+  // SELECT - Obtener información
   Future<ScanModel> getScanId( int id ) async {
 
-     final db = await database;
-     final res = await db.query('Scans', where: 'id = ?', whereArgs: [id] );
-     return res.isNotEmpty ? ScanModel.fromJson( res.first ) : null;
+    final db  = await database;
+    final res = await db.query('Scans', where: 'id = ?', whereArgs: [id]  );
+    return res.isNotEmpty ? ScanModel.fromJson( res.first ) : null;
 
   }
-//-------Todos los Scans------------------------
+
   Future<List<ScanModel>> getTodosScans() async {
 
     final db  = await database;
@@ -83,7 +89,6 @@ class DBProvider{
     return list;
   }
 
-  //-------Scans por tipo------------------------
   Future<List<ScanModel>> getScansPorTipo( String tipo ) async {
 
     final db  = await database;
@@ -119,5 +124,5 @@ class DBProvider{
     return res;
   }
 
-
 }
+
